@@ -113,7 +113,7 @@ def create_modules(blocks):
             # Add the Batch Norm Layer
             if batch_normalize:
                 bn = nn.BatchNorm2d(filters)
-                module.add_module("batch_norm{_0}".format(index), bn)
+                module.add_module("batch_norm_{0}".format(index), bn)
 
             # check for activation layer
             # either Linear or Leaky ReLU for YOLO
