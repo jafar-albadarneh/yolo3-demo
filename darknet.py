@@ -8,6 +8,7 @@ import numpy as np
 from empty_layer import EmptyLayer
 from detection_layer import DetectionLayer
 
+#### Parse YOLO CFG ####
 def parse_cfg(cfgfile):
     """
     Takes a configuration file
@@ -175,12 +176,7 @@ def create_modules(blocks):
         # return a tuple with net_info and module_list
         return (net_info, module_list)
 
-
-
-
-
-
-
-        
-
+#### Run the network ###
+blocks = parse_cfg("cfg/yolov3.cfg")
+print(create_modules(blocks))
 
