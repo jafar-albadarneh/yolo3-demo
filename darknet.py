@@ -72,7 +72,7 @@ def create_modules(blocks):
     module_list = nn.ModuleList()
     prev_filters = 3 # as the image has 3 channels RGB
     output_filters = []
-
+    print "processing {} blocks".format(len(blocks))
     ### Create NN Modules from blocks
     for index, x in enumerate(blocks[1:]):
         # define a sequential module to execute
@@ -120,6 +120,7 @@ def create_modules(blocks):
             if activation == "leaky":
                 activn = nn.LeakyReLU(0.1, inplace= True)
                 module.add_module("leaky_{0}".format(index), activn)
+        
         ## if it's an Upsample layer    
         elif (x["type"] == "upsample"):
             stride = int(x["stride"])
@@ -150,18 +151,20 @@ def create_modules(blocks):
                 filters = output_filters[index + start] + output_filters[index + end]
             else:
                 filters = output_filters[index + start]
+        
         ### if a shortcut layer
         elif (x["type"] == "shortcut"):
             shortcut = EmptyLayer()
             module.add_module("shortcut_{0}".format(index), shortcut)
 
-        elif (x["type"] == "yolo"):
+        ### if a yolo layer
+        elif x["type"] == "yolo":
             mask = x["mask"].split(",")
+            anchors = x["anchors"].split(",")
             mask = [int(x) for x in mask]
 
-            anchors = x["anchors"].split(",")
             anchors = [int(a) for a in anchors]
-            anchors = [(anchors[i],anchors[i+1]) for i in range(0, len(anchors),2)]
+            anchors = [(anchors[i], anchors[i+1]) for i in range(0, len(anchors),2)]
             anchors = [anchors[i] for i in mask]
 
             detection = DetectionLayer(anchors)
@@ -173,8 +176,8 @@ def create_modules(blocks):
         prev_filters = filters
         output_filters.append(filters)
 
-        # return a tuple with net_info and module_list
-        return (net_info, module_list)
+    # return a tuple with net_info and module_list
+    return (net_info, module_list)
 
 #### Run the network ###
 blocks = parse_cfg("cfg/yolov3.cfg")
