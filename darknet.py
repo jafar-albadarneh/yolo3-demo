@@ -107,7 +107,7 @@ def create_modules(blocks):
                 pad = 0
 
             # Add the covolutional layer
-            conv = nn.Conv2d(prev_filters, filters, kernel_size, stride = stride, pad, bias = bias)
+            conv = nn.Conv2d(prev_filters, filters, kernel_size, stride, pad, bias = bias)
             module.add_module("conv_{0}".format(index), conv)
 
             # Add the Batch Norm Layer
