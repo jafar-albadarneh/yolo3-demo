@@ -179,7 +179,7 @@ def create_modules(blocks):
     # return a tuple with net_info and module_list
     return (net_info, module_list)
 
-#### Run the network ###
+#### Run the network ### 
 blocks = parse_cfg("cfg/yolov3.cfg")
 print(create_modules(blocks))
 
